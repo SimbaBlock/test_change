@@ -100,7 +100,7 @@ main(int argc, char* argv[])
         exit(EXIT_FAILURE);
     }
 
-    printf("Press ENTER key to terminate.\n");
+    printf("Press 'q' key to terminate.\n");
 
     /* Create the file descriptor for accessing the inotify API */
 
@@ -164,7 +164,7 @@ main(int argc, char* argv[])
 
                 /* Console input is available. Empty stdin and quit */
 
-                while (read(STDIN_FILENO, &buf, 1) > 0 && buf != '\n')
+                while (read(STDIN_FILENO, &buf, 1) > 0 && buf != 'q')
                     continue;
                 break;
             }
