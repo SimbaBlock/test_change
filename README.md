@@ -1,4 +1,4 @@
-# test_changer
+# test_change
 
 make  
 ./test_change_X86_64 &  
