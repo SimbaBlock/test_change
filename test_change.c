@@ -62,26 +62,45 @@ handle_events(int fd, int *wd, int argc, char* argv[])
             if (event->mask & IN_MOVED_TO)
                 printf("IN_MOVED_TO: ");
 
-            /* Print the name of the watched directory */
+            /* Print the name of the watched directory and the file name*/
 
             for (i = 1; i < argc; ++i) {
                 if (wd[i] == event->wd) {
-                    printf("%s/", argv[i]);
-                    break;
+		  if (event->len) {
+		    //printf("%s/%s", argv[i], event->name);
+		    /* Print type of filesystem object */
+		    if (event->mask & IN_ISDIR) { 
+		      printf("%s/%s", argv[i], event->name);
+		      printf(" [directory]\n");
+		    } else {		    
+		      //printf("%s/%s", argv[i], event->name);
+		      //printf(" [file]\n");
+		      
+		      char filename[512];
+		      sprintf(filename,"%s/%s", argv[i], event->name);
+		      printf("filename: %s\n", filename);
+
+		      char *a[] = {"scp",filename,"pisa@pisa:~/test",NULL};
+		      int ret = execvp("/usr/bin/scp", a);
+		      
+		    }
+		  }
+		  break;
                 }
             }
-
+	    
             /* Print the name of the file */
-
-            if (event->len)
+	    /*
+            if (event->len) 
                 printf("%s", event->name);
-
+	    */
             /* Print type of filesystem object */
-
+	    /*
             if (event->mask & IN_ISDIR)
                 printf(" [directory]\n");
             else
                 printf(" [file]\n");
+	    */
         }
     }
 }
